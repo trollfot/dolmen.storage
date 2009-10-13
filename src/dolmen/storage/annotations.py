@@ -13,7 +13,7 @@ class AnnotationStorage(DelegatedStorage, grok.Adapter):
     grok.context(IAttributeAnnotatable)
     
     def __init__(self, context):
-        name = grok.name.bind().get(self) or 'default'
+        name = grok.name.bind().get(self) or 'dolmen.storage.default'
         annotations = IAnnotations(context)
         if name not in annotations:
             annotations[name] = BTreeStorage()
