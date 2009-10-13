@@ -1,47 +1,53 @@
 # -*- coding: utf-8 -*-
 
 import grokcore.component as grok
-from zope.annotation.interfaces import IAnnotations
 from dolmen.storage import IDelegatedStorage
-from dolmen.storage import DelegatedStorage, BtreeStorage
+from dolmen.storage import DelegatedStorage, BTreeStorage
+from zope.component import getAdapter, queryAdapter
+from zope.schema.fieldproperty import FieldProperty
+from zope.annotation.interfaces import IAttributeAnnotatable, IAnnotations
 
 
 class AnnotationStorage(DelegatedStorage, grok.Adapter):
     grok.baseclass()
-    grok.context(IAnnotatable)
-
-    storage_key = u""
+    grok.context(IAttributeAnnotatable)
     
     def __init__(self, context):
+        name = grok.name.bind().get(self) or 'default'
         annotations = IAnnotations(context)
-        if self.storage_key not in annotations:
-            annotations[self.storage_key] = BtreeStorage()
-        self.storage = annotations[self.storage_key]
+        if name not in annotations:
+            annotations[name] = BTreeStorage()
+        self.storage = annotations[name]
 
+
+_marker = object()
 
 class AnnotationProperty(object):
     """A property using a delegated annotation storage.
     """
     def __init__(self, field, storage="", name=None):
         self._name = name or field.__name__
+        self._field = field
         self._storage = storage
-        self.__field = field
-
+        
     def __get__(self, inst, klass):
-        field = self.__field.bind(inst)
-        storage = getAdapter(
-            inst.context, IDelegatedStorage, self._storage
-            )
-        return storage[self._name]
+        field = self._field.bind(inst)
+        storage = getAdapter(inst.context, IDelegatedStorage, self._storage)
+        value = storage.get(self._name, _marker)
+        if value is _marker:
+            field = self._field.bind(inst)
+            value = getattr(field, 'default', _marker)
+            if value is _marker:
+                raise AttributeError(self._name)
+        return value
 
     def __set__(self, inst, value):
-        field = self.__field.bind(inst)
+        field = self._field.bind(inst)
         if field.readonly:
             raise ValueError(self._name, 'field is readonly')
-        storage = getAdapter(
-            inst.context, IDelegatedStorage, self._storage
-            )
+        field.validate(value)
+        storage = getAdapter(inst.context, IDelegatedStorage, self._storage)
         storage[self._name] = value
 
     def __getattr__(self, name):
-        return getattr(self.__field, name)
+        return getattr(self._field, name)

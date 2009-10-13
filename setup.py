@@ -3,13 +3,13 @@ from os.path import join
 
 name = 'dolmen.storage'
 version = '0.1'
-readme = open(join('dolmen', 'storage', 'README.txt').read()
-history = open(join('docs', 'HISTORY.txt')).read().replace(name + ' - ', '')
+readme = open(join('src', 'dolmen', 'storage', 'README.txt')).read()
+history = open(join('docs', 'HISTORY.txt')).read()
 
 setup(name = name,
       version = version,
       description = 'Dolmen Zope3 Storage',
-      long_description = readme[readme.find('\n\n'):] + '\n' + history,
+      long_description = readme + '\n\n' + history,
       keywords = 'Grok Zope3 CMS Dolmen',
       author = 'Souheil Chelfouh',
       author_email = 'souheil@chelfouh.com',
@@ -24,7 +24,11 @@ setup(name = name,
       zip_safe = True,
       install_requires=[
           'setuptools',
-          'grok',
+          'zope.schema',
+          'zope.interface',
+          'zope.annotation',
+          'zope.app.container',
+          'grokcore.component',
       ],
       classifiers = [
         'Development Status :: 4 - Beta',

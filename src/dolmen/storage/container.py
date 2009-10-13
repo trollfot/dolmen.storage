@@ -5,18 +5,14 @@ from zope.interface import implements
 from dolmen.storage import IStorage, IDelegatedStorage
 
 
-class BtreeStorage(OOBTree):
+class BTreeStorage(OOBTree):
     implements(IStorage)
 
 
 class DelegatedStorage(object):
     implements(IDelegatedStorage)
 
-    @property
-    def storage(self):
-        raise NotImplementedError(
-            'You have to provide your own storage.'
-            )
+    storage = None
 
     def __len__(self):
         return len(self.storage)
@@ -32,7 +28,7 @@ class DelegatedStorage(object):
     def __delitem__(self, name):
         return self.storage.__delitem__(name)
 
-    def __iter__():
+    def __iter__(self):
         return self.storage.__iter__()
 
     def __contains__(self, key):
@@ -47,5 +43,5 @@ class DelegatedStorage(object):
     def values(self):
         return self.storage.values()
 
-    def items():
+    def items(self):
         return self.storage.items()
