@@ -4,26 +4,25 @@ Annotation storage property
 ===========================
 
 Often, when we want to extend a component, we need to store
-values. Zope provides a very flexible mechanism called "annotations"
-which permits to add information on an object, following a very simple
+values. Zope provides a very flexible mechanism called `annotations`
+which permits us to add information on an object, by following a very simple
 API.
 
-In `dolmen.storage`, we built on the top of this mechanism to provide a very
-transparent way to store values in annotations, using a property.
+In `dolmen.storage` we build on top of the annotation mechanism to provide a
+very transparent way to store new values as properties.
 
 
 Getting started
 ---------------
 
-We boostrap out project by importing the basic dependencies and
+We boostrap our project by importing the basic dependencies and
 initializing the annotation component::
 
   >>> from zope.annotation.attribute import AttributeAnnotations
   >>> from zope.component import provideAdapter
   >>> provideAdapter(AttributeAnnotations)
 
-Then, grokking the module will allow us to register our components
-using Grok::
+Then, using Grok, we grok the module to register the components::
 
   >>> import grokcore.component as grok
   >>> from grokcore.component import testing
@@ -33,9 +32,9 @@ using Grok::
 Annotatable object
 ------------------
 
-To demonstrate the behavior of an annotation property, we're going to
-go through a simple example. We are going to implement a document that
-can be commented. 
+Let's go through a simple example to demonstrate the behavior of an
+annotation property. We are going to implement a document that
+can be commented.
 
 First, let's declare our document class::
 
@@ -52,17 +51,17 @@ First, let's declare our document class::
 
 Here, our document class implement IAttributeAnnotatable, meaning it
 is elegible for an attribute annotation, which stores the annotation
-on a `__annotations__` attribute.
+on the `__annotations__` attribute.
 
 
 Declaring the API
 -----------------
 
-The document class is there, well defined. However, I want to add a
-comment and a rating value on it. I want this to be clear and provide
+The document class is defined. However, We want to add a
+comment and a rating value on it. We want this to be clear and provide
 an explicit API.
 
-We define the API want to expose::
+The API we want to expose looks like this::
 
   >>> from zope.interface import Interface
   >>> from zope.schema import TextLine, Int
@@ -75,12 +74,12 @@ We define the API want to expose::
 Annotation property
 -------------------
 
-To make this API useable, we implement it into a pluggable component :
-an Adapter. In this Adapter, the attributes defined in the API will be
+To make this API useable, we implement it into an *Adapter* (a pluggable
+component). In this *Adapter*, the attributes defined in the API will be
 annotation properties.
 
 An annotation property will provide a simple way to access a value
-stored in an annotation. Further more, it will provide a validation on
+stored in the annotation. Further more, it will provide a validation on
 the value attribution and a default value on the retrieval.
 
 Let's create this adapter::
@@ -96,7 +95,7 @@ Let's create this adapter::
   ...                                name='mark')
 
 
-This is very close from a `zope.schema.fieldproperty.FieldProperty`
+This is very close to a `zope.schema.fieldproperty.FieldProperty`
 property. Beside the field object, two keyword arguments can be given
 : `storage` and `name`. `storage` is the name of the
 `dolmen.storage.IDelegatedStorage` component in charge of the
@@ -118,20 +117,21 @@ storage name. Let's implement this storage component::
   >>> class SimpleStorage(AnnotationStorage):
   ...    grok.name('simple')
 
-That's all !
+That's all!
 
 
 Testing the commenting system
 -----------------------------
 
-Let's Grok out components to make then available::
+Let's Grok the components to make then available::
 
   >>> testing.grok_component('simplestorage', SimpleStorage)
   True
   >>> testing.grok_component('commenting', Commenting)
   True
 
-Now, we instanciate a Document and  adapt it to our API interface::
+Now, we instantiate a Document and adapt the new object. The adapted object
+now provides our Commenting API::
 
   >>> thesis = Document(u'A thesis about Mammoth')
   >>> commenting = IComment(thesis)
@@ -148,7 +148,7 @@ Let's set new values::
   >>> commenting.remark = u'A good effort. Continue like this.'
   >>> commenting.rating = 13
 
-We print our values to check that everything has been stored properly::
+We print our values to check that everything has been stored correctly::
 
   >>> print commenting.remark
   A good effort. Continue like this.
@@ -162,12 +162,12 @@ The property checks the validity of the value::
   ...
   WrongType: (['A', 'B'], <type 'unicode'>)
 
-Now, we can check how the values are stored::
+Lastly, we can check how the values are stored::
 
   >>> annotations = thesis.__annotations__
   >>> list(annotations.keys())
   ['simple']
   >>> list(annotations.get(u'simple').keys())
   ['mark', 'remark']
-  
+
 """
