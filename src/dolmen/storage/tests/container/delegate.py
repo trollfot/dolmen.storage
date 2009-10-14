@@ -73,7 +73,10 @@ intended::
 
   >>> del container['james']
   >>> print container['james']
-  None
+  Traceback (most recent call last):
+  ...
+  KeyError: 'james'
+
   >>> len(container)
   0
 

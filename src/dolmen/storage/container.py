@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from BTrees.OOBTree import OOBTree
+from zope.event import notify
 from zope.interface import implements
+from zope.app.container import contained
+from zope.exceptions import DuplicationError
 from dolmen.storage import IStorage, IDelegatedStorage
 
 
@@ -17,22 +20,25 @@ class DelegatedStorage(object):
     def __len__(self):
         return len(self.storage)
 
-    def __set__(self, name, value):
+    def __setitem__(self, name, value):
         self.storage[name] = value
-    __setitem__ = __set__
 
-    def __get__(self, key, default=None):
+    def __getitem__(self, key, default=None):
+        return self.storage[key]
+
+    def get(self, key, default=None):
         return self.storage.get(key, default)
-    get = __getitem__ = __get__
 
     def __delitem__(self, name):
-        return self.storage.__delitem__(name)
-
+        self.storage.__delitem__(name)
+        
     def __iter__(self):
-        return self.storage.__iter__()
+        return iter(self.storage)
 
     def __contains__(self, key):
         return self.storage.__contains__(key)
+
+    has_key = __contains__
 
     def clear(self):
         return self.storage.clear()
