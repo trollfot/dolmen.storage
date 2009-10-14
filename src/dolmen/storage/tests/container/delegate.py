@@ -10,11 +10,11 @@ which is an object implementing `IStorage`.
 
 We first create a DelegatedStorage::
 
-  >>> from dolmen.storage import IStorage, BTreeStorage, DelegatedStorage
+  >>> from dolmen.storage import IStorage, OOBTreeStorage, DelegatedStorage
   
   >>> class MyStorage(DelegatedStorage):
   ...     def __init__(self):
-  ...         self.storage = BTreeStorage()
+  ...         self.storage = OOBTreeStorage()
 
   >>> container = MyStorage()
 
@@ -79,5 +79,38 @@ intended::
 
   >>> len(container)
   0
+
+
+A delegated storage will enforce the check of the object, before
+persistence. If a precondition exists, it will be test::
+
+  >>> from zope.interface import Interface, implements
+  >>> from zope.app.container.constraints import contains
+
+  >>> class IComment(Interface):
+  ...     pass
+
+  >>> class IComments(Interface):
+  ...     contains(IComment)
+
+  >>> class CommentStorage(DelegatedStorage):
+  ...     implements(IComments)
+  ...     def __init__(self):
+  ...         self.storage = OOBTreeStorage()
+
+  >>> class Remark(object):
+  ...     implements(IComment)
+
+  >>> class Junk(object):
+  ...     pass
+
+  >>> note = Remark()
+  >>> junk = Junk()
+  >>> comments = CommentStorage()
+  >>> comments['trimester1'] = note
+  >>> comments['trimester2'] = junk
+  Traceback (most recent call last):
+  ...
+  InvalidItemType: (<dolmen.storage.tests.container.delegate.CommentStorage object at ...>, <dolmen.storage.tests.container.delegate.Junk object at ...>, (<InterfaceClass dolmen.storage.tests.container.delegate.IComment>,))
 
 """

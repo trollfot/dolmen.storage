@@ -9,8 +9,8 @@ component subclassing an OOBTree and implementing `IStorage`.
 
 We first instanciate a BTreeStorage::
 
-  >>> from dolmen.storage import IStorage, BTreeStorage
-  >>> container = BTreeStorage()
+  >>> from dolmen.storage import IStorage, OOBTreeStorage
+  >>> container = OOBTreeStorage()
 
 
 We ensure that the interface is correctly provided::

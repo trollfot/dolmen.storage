@@ -2,7 +2,7 @@
 
 import grokcore.component as grok
 from dolmen.storage import IDelegatedStorage
-from dolmen.storage import DelegatedStorage, BTreeStorage
+from dolmen.storage import DelegatedStorage, OOBTreeStorage
 from zope.component import getAdapter, queryAdapter
 from zope.schema.fieldproperty import FieldProperty
 from zope.annotation.interfaces import IAttributeAnnotatable, IAnnotations
@@ -11,12 +11,14 @@ from zope.annotation.interfaces import IAttributeAnnotatable, IAnnotations
 class AnnotationStorage(DelegatedStorage, grok.Adapter):
     grok.baseclass()
     grok.context(IAttributeAnnotatable)
+
+    _factory = OOBTreeStorage
     
     def __init__(self, context):
         name = grok.name.bind().get(self) or 'dolmen.storage.default'
         annotations = IAnnotations(context)
         if name not in annotations:
-            annotations[name] = BTreeStorage()
+            annotations[name] = self._factory()
         self.storage = annotations[name]
 
 
