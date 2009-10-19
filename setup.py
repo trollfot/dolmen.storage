@@ -23,7 +23,7 @@ tests_require = install_requires + [
 
 setup(name = name,
       version = version,
-      description = 'Dolmen Zope3 Storage',
+      description = 'Dolmen Zope3 Grok Storage Annotation',
       long_description = readme + '\n\n' + history,
       keywords = 'Grok Zope3 CMS Dolmen',
       author = 'Souheil Chelfouh',
