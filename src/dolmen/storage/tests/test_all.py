@@ -12,12 +12,6 @@ FunctionalLayer = functional.ZCMLLayer(
     ftesting_zcml, __name__, 'FunctionalLayer', allow_teardown=True)
 
 
-def setUpZope(test):
-    zope.component.eventtesting.setUp(test)
-
-def cleanUpZope(test):
-    cleanup.cleanUp()
-
 def suiteFromPackage(name):
     files = pkg_resources.resource_listdir(__name__, name)
     suite = unittest.TestSuite()
