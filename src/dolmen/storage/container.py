@@ -4,6 +4,7 @@ from BTrees.OOBTree import OOBTree
 from BTrees.IOBTree import IOBTree
 from zope.event import notify
 from zope.interface import implements
+from zope.schema.fieldproperty import FieldProperty
 from zope.app.container import contained, constraints
 from dolmen.storage import IStorage, IDelegatedStorage
 
@@ -19,7 +20,7 @@ class IOBTreeStorage(IOBTree):
 class DelegatedStorage(object):
     implements(IDelegatedStorage)
 
-    storage = None
+    storage = FieldProperty(IDelegatedStorage['storage'])
 
     def __len__(self):
         return len(self.storage)

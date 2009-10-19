@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import os.path
 import unittest
-from pkg_resources import resource_listdir
-from zope.testing import doctest, cleanup, module
+import pkg_resources
+
+from zope.testing import doctest
 from zope.app.testing import functional
 
 ftesting_zcml = os.path.join(os.path.dirname(__file__), 'ftesting.zcml')
@@ -17,7 +19,7 @@ def cleanUpZope(test):
     cleanup.cleanUp()
 
 def suiteFromPackage(name):
-    files = resource_listdir(__name__, name)
+    files = pkg_resources.resource_listdir(__name__, name)
     suite = unittest.TestSuite()
     for filename in files:
         if not filename.endswith('.py'):
@@ -30,8 +32,6 @@ def suiteFromPackage(name):
         dottedname = 'dolmen.storage.tests.%s.%s' % (name, filename[:-3])
         test = doctest.DocTestSuite(
             dottedname,
-            setUp=setUpZope,
-            tearDown=cleanUpZope,
             optionflags=doctest.ELLIPSIS+doctest.NORMALIZE_WHITESPACE)
         suite.addTest(test)
     return suite
@@ -41,7 +41,7 @@ def test_suite():
     suite = unittest.TestSuite()
 
     readme = functional.FunctionalDocFileSuite(
-        'README.txt',
+        '../README.txt',
         optionflags=(doctest.ELLIPSIS + doctest.NORMALIZE_WHITESPACE),
         )
     readme.layer = FunctionalLayer

@@ -21,4 +21,5 @@ class IDelegatedStorage(IStorage):
         title = u"Storage container",
         description = u"A container to delegate the storage.",
         schema = IStorage,
+        default=None
         )
