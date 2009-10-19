@@ -1,7 +1,14 @@
-import unittest, traceback
+# -*- coding: utf-8 -*-
+
+import unittest
 from pkg_resources import resource_listdir
-from zope.testing import doctest, cleanup, renormalizing
-import zope.component.eventtesting
+from zope.testing import doctest, cleanup, module
+from zope.app.testing import functional
+
+ftesting_zcml = os.path.join(os.path.dirname(__file__), 'ftesting.zcml')
+FunctionalLayer = functional.ZCMLLayer(
+    ftesting_zcml, __name__, 'FunctionalLayer', allow_teardown=True)
+
 
 def setUpZope(test):
     zope.component.eventtesting.setUp(test)
@@ -29,11 +36,22 @@ def suiteFromPackage(name):
         suite.addTest(test)
     return suite
 
+
 def test_suite():
     suite = unittest.TestSuite()
+
+    readme = functional.FunctionalDocFileSuite(
+        'README.txt',
+        optionflags=(doctest.ELLIPSIS + doctest.NORMALIZE_WHITESPACE),
+        )
+    readme.layer = FunctionalLayer
+    suite.addTest(readme)
+    
     for name in ['container', 'annotations']:
         suite.addTest(suiteFromPackage(name))
+    
     return suite
+
 
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite')

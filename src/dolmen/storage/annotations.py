@@ -20,7 +20,8 @@ class AnnotationStorage(DelegatedStorage, grok.Adapter):
         if name not in annotations:
             annotations[name] = self._factory()
         self.storage = annotations[name]
-
+        self.storage.__parent__ = context
+        self.storage.__name__ = "++%s++" % name
 
 _marker = object()
 
