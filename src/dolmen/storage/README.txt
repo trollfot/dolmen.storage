@@ -2,8 +2,8 @@
 dolmen.storage
 ==============
 
-`dolmen.storage` defines a clear high-level API to deal containment
-storage.
+`dolmen.storage` defines a clear high-level API to deal with pluggable
+storage components.
 
 Components
 ==========
@@ -14,8 +14,8 @@ Storage
 A storage is a component dedicated to store contents. It behaves like
 a container and provides the interface `dolmen.storage.IStorage`.
 
-Out of the box, two IStorage components are available, based on a ZODB
-BTree::
+Out of the box, two IStorage components are available, based on ZODB
+BTrees::
 
   >>> from dolmen.storage import IStorage
   >>> from dolmen.storage import container
@@ -37,7 +37,7 @@ BTree::
 Delegated storage
 -----------------
 
-A delegated storage is a component behaving like a Storage, but
+A delegated storage is a component behaving like a Storage but
 delegating all the container-level methods to a `storage`
 attribute::
 
@@ -77,6 +77,11 @@ annotation storage facility.
 Annotation Storage
 ------------------
 
+.. attention::
+
+  This functionality is detailed in the package's tests. Please, read
+  the tests for more information concerning the `AnnotationStorage`.
+
 The annotation storage provides a way to delegate the storage in an
 annotation container::
 
@@ -112,8 +117,13 @@ annotation container::
 Annotation property
 -------------------
 
+.. attention::
+
+  This functionality is detailed in the package's tests. Please, read
+  the tests for more information concerning the `AnnotationProperty`.
+
 The annotation property allows a direct access to an annotation
-storage or value, via a FieldProperty-like property::
+storage or value via a FieldProperty-like property::
 
   >>> from zope.schema import TextLine
   >>> from zope.interface import Interface
