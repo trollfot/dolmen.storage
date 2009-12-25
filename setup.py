@@ -11,7 +11,7 @@ install_requires = [
     'zope.schema',
     'zope.interface',
     'zope.annotation',
-    'zope.app.container',
+    'zope.container',
     'grokcore.component',
     ]
 
