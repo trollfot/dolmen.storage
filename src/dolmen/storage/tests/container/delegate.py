@@ -85,7 +85,7 @@ A delegated storage will enforce the check of the object, before
 persistence. If a precondition exists, it will be test::
 
   >>> from zope.interface import Interface, implements
-  >>> from zope.app.container.constraints import contains
+  >>> from zope.container.constraints import contains
 
   >>> class IComment(Interface):
   ...     pass

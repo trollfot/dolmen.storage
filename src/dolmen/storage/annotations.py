@@ -3,8 +3,7 @@
 import grokcore.component as grok
 from dolmen.storage import IDelegatedStorage
 from dolmen.storage import DelegatedStorage, OOBTreeStorage
-from zope.component import getAdapter, queryAdapter
-from zope.schema.fieldproperty import FieldProperty
+from zope.component import getAdapter
 from zope.annotation.interfaces import IAttributeAnnotatable, IAnnotations
 
 

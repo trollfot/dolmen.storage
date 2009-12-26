@@ -9,13 +9,15 @@ history = open(join('docs', 'HISTORY.txt')).read()
 install_requires = [
     'setuptools',
     'zope.schema',
+    'zope.component',
     'zope.interface',
     'zope.annotation',
     'zope.container',
     'grokcore.component',
     ]
 
-tests_require = install_requires + [
+tests_require = [
+    'zope.component',
     'zope.testing',
     'zope.app.testing',
     'zope.app.zcmlfiles',

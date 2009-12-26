@@ -2,10 +2,9 @@
 
 from BTrees.OOBTree import OOBTree
 from BTrees.IOBTree import IOBTree
-from zope.event import notify
 from zope.interface import implements
 from zope.schema.fieldproperty import FieldProperty
-from zope.container import contained, constraints
+from zope.container import constraints
 from dolmen.storage import IStorage, IDelegatedStorage
 
 

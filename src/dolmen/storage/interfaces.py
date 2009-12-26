@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from zope.schema import Object
-from zope.app.container.interfaces import IContainer
+from zope.container.interfaces import IContainer
 
     
 class IStorage(IContainer):
