@@ -10,7 +10,6 @@ install_requires = [
     'ZODB3',
     'grokcore.component',
     'setuptools',
-<<<<<<< HEAD:setup.py
     'zope.annotation',
     'zope.container',
     'zope.component >= 3.9.1',
@@ -20,18 +19,6 @@ install_requires = [
 
 tests_require = [
     'zope.container',
-=======
-    'zope.schema',
-    'zope.component',
-    'zope.interface',
-    'zope.annotation',
-    'zope.container',
-    'grokcore.component',
-    ]
-
-tests_require = [
-    'zope.component',
->>>>>>> f23fdd4a53897c14e19ff0eee5a68d9dd7c0bba7:setup.py
     'zope.testing',
     'zope.traversing',
     'zope.site',
