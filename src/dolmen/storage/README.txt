@@ -19,7 +19,7 @@ BTrees::
 
   >>> from dolmen.storage import IStorage
   >>> from dolmen.storage import container
-  >>> from zope.app.container.interfaces import IContainer
+  >>> from zope.container.interfaces import IContainer
 
   >>> otree = container.OOBTreeStorage()
   >>> itree = container.IOBTreeStorage()

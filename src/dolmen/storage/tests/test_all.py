@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 
-import os.path
 import unittest
 import pkg_resources
-
+from dolmen.storage import tests
 from zope.testing import doctest
-from zope.app.testing import functional
 
-ftesting_zcml = os.path.join(os.path.dirname(__file__), 'ftesting.zcml')
-FunctionalLayer = functional.ZCMLLayer(
-    ftesting_zcml, __name__, 'FunctionalLayer', allow_teardown=True)
+
+def make_test(dottedname):
+    test = doctest.DocTestSuite(
+        dottedname,
+        optionflags=doctest.ELLIPSIS+doctest.NORMALIZE_WHITESPACE)
+    test.layer = tests.DolmenStorageLayer(tests)
+    return test
 
 
 def suiteFromPackage(name):
@@ -24,26 +26,22 @@ def suiteFromPackage(name):
             continue
 
         dottedname = 'dolmen.storage.tests.%s.%s' % (name, filename[:-3])
-        test = doctest.DocTestSuite(
-            dottedname,
-            optionflags=doctest.ELLIPSIS+doctest.NORMALIZE_WHITESPACE)
-        suite.addTest(test)
+        suite.addTest(make_test(dottedname))
     return suite
 
 
 def test_suite():
     suite = unittest.TestSuite()
 
-    readme = functional.FunctionalDocFileSuite(
+    readme = doctest.DocFileSuite(
         '../README.txt',
         optionflags=(doctest.ELLIPSIS + doctest.NORMALIZE_WHITESPACE),
         )
-    readme.layer = FunctionalLayer
+    readme.layer = tests.DolmenStorageLayer(tests)
     suite.addTest(readme)
     
     for name in ['container', 'annotations']:
         suite.addTest(suiteFromPackage(name))
-    
     return suite
 
 

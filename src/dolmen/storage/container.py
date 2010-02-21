@@ -2,10 +2,9 @@
 
 from BTrees.OOBTree import OOBTree
 from BTrees.IOBTree import IOBTree
-from zope.event import notify
 from zope.interface import implements
+from zope.container import constraints
 from zope.schema.fieldproperty import FieldProperty
-from zope.app.container import contained, constraints
 from dolmen.storage import IStorage, IDelegatedStorage
 
 
@@ -37,7 +36,7 @@ class DelegatedStorage(object):
 
     def __delitem__(self, name):
         self.storage.__delitem__(name)
-        
+
     def __iter__(self):
         return iter(self.storage)
 

@@ -1,3 +1,4 @@
-from interfaces import IStorage, IDelegatedStorage
-from container import OOBTreeStorage, IOBTreeStorage, DelegatedStorage
-from annotations import AnnotationStorage, AnnotationProperty
+from dolmen.storage.interfaces import IStorage, IDelegatedStorage
+from dolmen.storage.container import (
+    OOBTreeStorage, IOBTreeStorage, DelegatedStorage)
+from dolmen.storage.annotations import AnnotationStorage, AnnotationProperty

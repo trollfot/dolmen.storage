@@ -3,8 +3,7 @@
 import grokcore.component as grok
 from dolmen.storage import IDelegatedStorage
 from dolmen.storage import DelegatedStorage, OOBTreeStorage
-from zope.component import getAdapter, queryAdapter
-from zope.schema.fieldproperty import FieldProperty
+from zope.component import getAdapter
 from zope.annotation.interfaces import IAttributeAnnotatable, IAnnotations
 
 
@@ -13,7 +12,7 @@ class AnnotationStorage(DelegatedStorage, grok.Adapter):
     grok.context(IAttributeAnnotatable)
 
     _factory = OOBTreeStorage
-    
+
     def __init__(self, context):
         name = grok.name.bind().get(self) or 'dolmen.default'
         annotations = IAnnotations(context)
@@ -23,11 +22,14 @@ class AnnotationStorage(DelegatedStorage, grok.Adapter):
         self.storage.__parent__ = context
         self.storage.__name__ = "++storage++%s" % name
 
+
 _marker = object()
+
 
 class AnnotationProperty(object):
     """A property using a delegated annotation storage.
     """
+
     def __init__(self, field, storage=None, name=None):
         self._name = name or field.__name__
         self._field = field
@@ -37,7 +39,7 @@ class AnnotationProperty(object):
         if self._storage is None:
             return IAnnotations(context)
         return getAdapter(context, IDelegatedStorage, self._storage)
-        
+
     def __get__(self, inst, klass):
         field = self._field.bind(inst)
         storage = self._get_storage(inst.context)

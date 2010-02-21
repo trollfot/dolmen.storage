@@ -160,7 +160,7 @@ The property checks the validity of the value::
   >>> commenting.remark = ['A', 'B']
   Traceback (most recent call last):
   ...
-  WrongType: (['A', 'B'], <type 'unicode'>)
+  WrongType: (['A', 'B'], <type 'unicode'>, 'remark')
 
 Lastly, we can check how the values are stored::
 
