@@ -5,7 +5,7 @@ Changelog
 ----------------
 
 * The delegated ``AnnotationStorage`` now uses a
-  ``zope.location.LocationProxy``to avoid writting the location
+  ``zope.location.LocationProxy`` to avoid writting the location
   information directly on the storage object. This removes all related
   read/write conflicts.
 
