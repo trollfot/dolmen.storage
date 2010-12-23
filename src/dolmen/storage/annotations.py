@@ -4,6 +4,7 @@ import grokcore.component as grok
 from dolmen.storage import IDelegatedStorage
 from dolmen.storage import DelegatedStorage, OOBTreeStorage
 from zope.component import getAdapter
+from zope.location import LocationProxy
 from zope.annotation.interfaces import IAttributeAnnotatable, IAnnotations
 
 
@@ -18,7 +19,7 @@ class AnnotationStorage(DelegatedStorage, grok.Adapter):
         annotations = IAnnotations(context)
         if name not in annotations:
             annotations[name] = self._factory()
-        self.storage = annotations[name]
+        self.storage = LocationProxy(annotations[name])
         self.storage.__parent__ = context
         self.storage.__name__ = "++storage++%s" % name
 
